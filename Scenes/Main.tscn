@@ -1,0 +1,169 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Scenes/Main.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/HUD.cs" type="Script" id=2]
+[ext_resource path="res://Scenes/Plot.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Kitty.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Dialog.cs" type="Script" id=5]
+[ext_resource path="res://Assets/seller.png" type="Texture" id=6]
+[ext_resource path="res://Assets/buyer.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/Door.cs" type="Script" id=8]
+[ext_resource path="res://Assets/door.png" type="Texture" id=9]
+[ext_resource path="res://Assets/door-knock.png" type="Texture" id=10]
+[ext_resource path="res://Assets/door-knock2.png" type="Texture" id=11]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 11 ) ],
+"loop": true,
+"name": "knock",
+"speed": 0.05
+} ]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 24.5, 29.5 )
+
+[node name="MainGame" type="Node2D"]
+position = Vector2( 1, -1 )
+script = ExtResource( 1 )
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="HUD"]
+margin_left = 53.0
+margin_top = 536.0
+margin_right = 130.0
+margin_bottom = 556.0
+text = "End Game"
+
+[node name="SeedCount" type="RichTextLabel" parent="HUD"]
+margin_left = 14.0
+margin_top = 17.0
+margin_right = 129.0
+margin_bottom = 39.0
+text = "Seeds: 0"
+
+[node name="NipCount" type="RichTextLabel" parent="HUD"]
+margin_left = 98.0
+margin_top = 15.0
+margin_right = 213.0
+margin_bottom = 37.0
+text = "Nip: 0"
+
+[node name="CatCoin" type="RichTextLabel" parent="HUD"]
+margin_left = 162.0
+margin_top = 15.0
+margin_right = 277.0
+margin_bottom = 37.0
+text = "RatTails: $0"
+
+[node name="Share" type="RichTextLabel" parent="HUD"]
+margin_left = 280.0
+margin_top = 15.0
+margin_right = 429.0
+margin_bottom = 37.0
+text = "Market Share: 0%"
+
+[node name="TransactionUI" type="Control" parent="HUD"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+
+[node name="Message" type="RichTextLabel" parent="HUD/TransactionUI"]
+margin_left = 103.0
+margin_top = 87.0
+margin_right = 318.0
+margin_bottom = 188.0
+text = "Meow, I'd like some of that nipnip..."
+
+[node name="Sell" type="Button" parent="HUD/TransactionUI"]
+margin_left = 145.0
+margin_top = 155.0
+margin_right = 180.0
+margin_bottom = 175.0
+text = "Sell"
+
+[node name="Skip" type="Button" parent="HUD/TransactionUI"]
+margin_left = 223.0
+margin_top = 156.0
+margin_right = 274.0
+margin_bottom = 176.0
+text = "Shoo!!"
+
+[node name="Porch" type="Node2D" parent="."]
+position = Vector2( 1, -1 )
+
+[node name="Door" type="Node2D" parent="Porch"]
+position = Vector2( 514, 51 )
+script = ExtResource( 8 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Porch/Door"]
+scale = Vector2( 0.401, 0.385 )
+frames = SubResource( 2 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Porch/Door"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Porch/Door/StaticBody2D"]
+position = Vector2( 3, 19 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="Porch/Door"]
+autostart = true
+
+[node name="Plot" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 100, 171 )
+
+[node name="Plot2" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 189, 170 )
+
+[node name="Plot3" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 291, 171 )
+
+[node name="Plot4" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 379, 173 )
+
+[node name="Plot5" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 99, 293 )
+
+[node name="Plot6" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 192, 292 )
+
+[node name="Plot7" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 289, 286 )
+
+[node name="Plot8" parent="Porch" instance=ExtResource( 3 )]
+position = Vector2( 382, 293 )
+
+[node name="Kitty" parent="Porch" instance=ExtResource( 4 )]
+position = Vector2( 520, 144 )
+
+[node name="Door" type="Node2D" parent="."]
+visible = false
+
+[node name="NipLord" type="Node2D" parent="Door"]
+position = Vector2( 126, 359 )
+
+[node name="Sprite" type="Sprite" parent="Door/NipLord"]
+texture = ExtResource( 6 )
+
+[node name="Buyer" type="Node2D" parent="Door"]
+position = Vector2( 374, 185 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Sprite" type="Sprite" parent="Door/Buyer"]
+texture = ExtResource( 7 )
+
+[connection signal="pressed" from="HUD/Button" to="." method="EndGame"]
+[connection signal="OnSkip" from="HUD/TransactionUI" to="." method="CloseDoor"]
+[connection signal="OnSoldNip" from="HUD/TransactionUI" to="." method="CloseDoor"]
+[connection signal="pressed" from="HUD/TransactionUI/Sell" to="HUD/TransactionUI" method="Sell"]
+[connection signal="pressed" from="HUD/TransactionUI/Skip" to="HUD/TransactionUI" method="Skip"]
+[connection signal="OnAnswerDoor" from="Porch/Door" to="." method="OpenDoor"]
+[connection signal="timeout" from="Porch/Door/Timer" to="Porch/Door" method="CheckDoor"]
